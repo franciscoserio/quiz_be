@@ -1,0 +1,12 @@
+psycopg2
+pandas
+Django==3.2
+djangorestframework==3.13.1
+djangorestframework-jwt==1.11.0
+django-filter==21.1
+python-dotenv
+django-cors-headers==3.11
+celery
+redis
+black
+dataclass-csv

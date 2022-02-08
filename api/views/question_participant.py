@@ -10,8 +10,10 @@ class ListCreateParticipantView(ListCreateAPIView):
 
     def get_queryset(self):
         if self.request.user.is_admin:
-            return Participant.objects.all()
-        return Participant.objects.filter(quiz__user=self.request.user)
+            return Participant.objects.filter(quiz__id=self.kwargs.get("quiz_id"))
+        return Participant.objects.filter(
+            quiz__user=self.request.user, quiz__id=self.kwargs.get("quiz_id")
+        )
 
 
 class DestroyParticipantView(DestroyAPIView):
@@ -20,5 +22,7 @@ class DestroyParticipantView(DestroyAPIView):
 
     def get_queryset(self):
         if self.request.user.is_admin:
-            return Participant.objects.all()
-        return Participant.objects.filter(quiz__user=self.request.user)
+            return Participant.objects.filter(quiz__id=self.kwargs.get("quiz_id"))
+        return Participant.objects.filter(
+            quiz__user=self.request.user, quiz__id=self.kwargs.get("quiz_id")
+        )

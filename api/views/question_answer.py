@@ -10,8 +10,15 @@ class ListCreateQuestionAnswerView(ListCreateAPIView):
 
     def get_queryset(self):
         if self.request.user.is_admin:
-            return QuestionAnswer.objects.all()
-        return QuestionAnswer.objects.filter(question__quiz__user=self.request.user)
+            return QuestionAnswer.objects.filter(
+                question__quiz_id=self.kwargs.get("quiz_id"),
+                question__id=self.kwargs.get("question_id"),
+            )
+        return QuestionAnswer.objects.filter(
+            question__quiz__user=self.request.user,
+            question__quiz_id=self.kwargs.get("quiz_id"),
+            question__id=self.kwargs.get("question_id"),
+        )
 
 
 class RetrieveUpdateDestroyQuestionAnswerView(RetrieveUpdateDestroyAPIView):
@@ -20,5 +27,12 @@ class RetrieveUpdateDestroyQuestionAnswerView(RetrieveUpdateDestroyAPIView):
 
     def get_queryset(self):
         if self.request.user.is_admin:
-            return QuestionAnswer.objects.all()
-        return QuestionAnswer.objects.filter(question__quiz__user=self.request.user)
+            return QuestionAnswer.objects.filter(
+                question__quiz_id=self.kwargs.get("quiz_id"),
+                question__id=self.kwargs.get("question_id"),
+            )
+        return QuestionAnswer.objects.filter(
+            question__quiz__user=self.request.user,
+            question__quiz_id=self.kwargs.get("quiz_id"),
+            question__id=self.kwargs.get("question_id"),
+        )

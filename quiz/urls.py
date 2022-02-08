@@ -5,7 +5,10 @@ from api.views.participant.participant import (
     ListParticipantQuizView,
     RetrieveParticipantQuizView,
 )
-from api.views.participant.question import QuestionParticipantQuizView
+from api.views.participant.question import (
+    CreateQuestionAnswerParticipantQuizView,
+    RetrieveQuestionAnswerParticipantQuizView,
+)
 from api.views.participant.quiz_status import StatusQuizParticipantView
 from api.views.question import ListCreateQuestionView, RetrieveUpdateDestroyQuestionView
 from api.views.question_answer import (
@@ -57,7 +60,11 @@ urlpatterns = [
     path("api/participant/quizzes/<uuid:pk>", RetrieveParticipantQuizView.as_view()),
     path(
         "api/participant/quizzes/<uuid:quiz_id>/questions/<uuid:pk>",
-        QuestionParticipantQuizView.as_view(),
+        RetrieveQuestionAnswerParticipantQuizView.as_view(),
+    ),
+    path(
+        "api/participant/quizzes/<uuid:quiz_id>/questions/<uuid:pk>/answers",
+        CreateQuestionAnswerParticipantQuizView.as_view(),
     ),
     path(
         "api/participant/quizzes/<uuid:pk>/status", StatusQuizParticipantView.as_view()

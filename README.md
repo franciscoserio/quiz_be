@@ -684,3 +684,294 @@ Status: 404 Not Found
     "detail": "Not found."
 }
 ```
+
+### Quiz Status
+This endpoint provides some information about the progress of the quiz. Only the creator (and the admin) can use this endpoint to its own quizzes.
+
+**Request:**
+```json
+GET api/quizzes/:quiz_id/status
+```
+**Successful Response:**
+```json
+Status: 200 OK
+{
+    "datetime_limit": 2022-02-10 10:02:14,
+    "time_left": 2320,
+    "progress_total_questions_answered": 0.0
+}
+```
+**Failed Response:**
+```json
+Status: 401 Unauthorized
+{
+    "detail": "Authentication credentials were not provided."
+}
+```
+
+### Quiz Results
+This endpoint provides the result, in percentage, of the participants of the given quiz. Only the creator (and the admin) can use this endpoint to its own quizzes.
+
+**Request:**
+```json
+GET api/quizzes/:quiz_id/results
+```
+**Successful Response:**
+```json
+Status: 200 OK
+{
+    "participants": [
+        {
+            "id": "7c20d456-a277-485f-afe8-3693f56c9703",
+            "email": "participant@email.com",
+            "first_name": "Participant",
+            "last_name": "one",
+            "result": 60.0
+        }
+    ]
+}
+```
+**Failed Response:**
+```json
+Status: 401 Unauthorized
+{
+    "detail": "Authentication credentials were not provided."
+}
+```
+
+### Notify Quiz Results
+This endpoint notifies the participants of the quiz, via email, the results, in percentage. Only the creator (and the admin) can use this endpoint to its own quizzes.
+
+**Request:**
+```json
+GET api/quizzes/:quiz_id/results/notify
+```
+**Successful Response:**
+```json
+Status: 200 OK
+{
+    "results": "results were sent successfully via email"
+}
+```
+**Failed Response:**
+```json
+Status: 401 Unauthorized
+{
+    "detail": "Authentication credentials were not provided."
+}
+```
+
+### Participant Quizzes
+This endpoint lists the quizzes that the user can answer. Only the participant can use this endpoint to the quizzes that was invited to.
+
+**Request:**
+```json
+GET api/participant/quizzes
+```
+**Successful Response:**
+```json
+Status: 200 OK
+{
+    "count": 1,
+    "next": null,
+    "previous": null,
+    "results": [
+        {
+            "id": "aefd7296-3b49-49c1-8ab1-523453cea7b0",
+            "name": "quiz 2",
+            "description": "example of description!",
+            "question_time_limit": 50,
+            "datetime_limit": null
+        }
+    ]
+}
+```
+**Failed Response:**
+```json
+Status: 401 Unauthorized
+{
+    "detail": "Authentication credentials were not provided."
+}
+```
+
+### Retrieve Participant Quizzes
+This endpoint retrieve the quizzes that the user can answer. It retrieves information about the quiz and also the id's of the questions, so the user can answer them. Only the participant can use this endpoint to the quizzes that was invited to.
+
+**Request:**
+```json
+GET api/participant/quizzes/:id
+```
+**Successful Response:**
+```json
+Status: 200 OK
+{
+    "id": "aefd7296-3b49-49c1-8ab1-523453cea7b0",
+    "name": "quiz 2",
+    "description": "example of description!",
+    "question_time_limit": 50,
+    "datetime_limit": null,
+    "questions": [
+        "75e11b8c-95df-466a-b340-a8ac1c5dfe1c",
+        "daeffd66-ef0b-4d9c-8144-a6ddba61a729"
+    ]
+}
+```
+**Failed Response:**
+```json
+Status: 404 Not Found
+{
+    "errors": [
+        "quiz not found"
+    ]
+}
+```
+
+### Retrieve Participant Quizzes Questions
+This endpoint retrieve the quizzes that the user can answer. It retrieves information about the quiz and also the id's of the questions, so the user can answer them. Only the participant can use this endpoint to the quizzes that was invited to.
+
+**Request:**
+```json
+GET api/participant/quizzes/:quiz_id/questions/:question_id
+```
+**Successful Response:**
+```json
+Status: 200 OK
+{
+    "id": "75e11b8c-95df-466a-b340-a8ac1c5dfe1c",
+    "question": "question one",
+    "answers": [
+        {
+            "id": "4d8a5d3f-0fed-4b50-8ede-1c33bd722706",
+            "answer": "answer 1"
+        },
+        {
+            "id": "f06891a4-afc2-4da4-9347-59a332b6ea1c",
+            "answer": "answer 2"
+        }
+    ]
+}
+```
+**Failed Response:**
+```json
+Status: 404 Not Found
+{
+    "detail": "Not found."
+}
+```
+
+### Create Participant Quizzes Answer
+This endpoint is for the participant to answer a question of a given quiz. Only the participant can use this endpoint to the quizzes that was invited to.
+
+**Request:**
+```json
+POST api/participant/quizzes/:quiz_id/questions/:question_id/answers
+```
+**Successful Response:**
+```json
+Status: 201 Created
+{
+    "answer": "answer sent successfully"
+}
+```
+**Failed Response:**
+```json
+Status: 400 Bad Request
+{
+    "answer_id": [
+        "This field is required."
+    ]
+}
+```
+
+### Participant Quizzes Status
+This endpoint retrieves some information about the status of a given quiz. Only the participant can use this endpoint to the quizzes that was invited to.
+
+**Request:**
+```json
+GET api/participant/quizzes/:quiz_id/status
+```
+**Successful Response:**
+```json
+Status: 200 OK
+{
+    "datetime_limit": null,
+    "time_left": null,
+    "questions_answered": 1,
+    "questions_left": 1
+}
+```
+**Failed Response:**
+```json
+Status: 404 Not Found
+{
+    "errors": [
+        "quiz not found"
+    ]
+}
+```
+
+### Admin Quizzes Reports
+This endpoint retrieves a report with some information about the results of the quizzes created on the current day. Only the admin can use this endpoint.
+
+**Request:**
+```json
+GET api/admin/reports
+```
+**Successful Response:**
+```json
+Status: 200 OK
+{
+    "count": 2,
+    "next": null,
+    "previous": null,
+    "results": [
+        {
+            "id": "aefd7296-3b49-49c1-8ab1-523453cea7b0",
+            "name": "quiz 2",
+            "description": "example of description!",
+            "participants": [
+                {
+                    "id": "7c20d456-a277-485f-afe8-3693f56c9703",
+                    "email": "participant@email.com",
+                    "first_name": "Participant",
+                    "last_name": "one",
+                    "result": 50.0
+                }
+            ]
+        }
+    ]
+}
+```
+**Failed Response:**
+```json
+Status: 403 Forbidden
+{
+    "errors": [
+        "Only admin users have access to this endpoint"
+    ]
+}
+```
+
+### Admin Quizzes Reports (CSV)
+This endpoint retrieves a report, in csv format, with some information about the results of the quizzes created on the current day. Only the admin can use this endpoint.
+
+**Request:**
+```json
+GET api/admin/reports
+```
+**Successful Response:**
+```json
+Status: 200 OK
+id,name,description,participant_email,participant_first_name,participant_last_name,participant_result
+b62db041-3ae7-4fcd-be61-c74badf90d02,quiz 2,example of description!,,,,
+aefd7296-3b49-49c1-8ab1-523453cea7b0,quiz 2,example of description!,participant@email.com,Participant,one,50.0
+```
+**Failed Response:**
+```json
+Status: 403 Forbidden
+{
+    "errors": [
+        "Only admin users have access to this endpoint"
+    ]
+}
+```

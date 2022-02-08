@@ -30,7 +30,7 @@ urlpatterns = [
     path("api/register", RegisterView.as_view()),
     path("api/users/confirmation", UserConfirmationView.as_view()),
     # creators and admin
-    path("api/quizzes", ListCreateQuizView.as_view()),
+    path("api/quizzes", ListCreateQuizView.as_view(), name="quizzes"),
     path("api/quizzes/<uuid:pk>", RetrieveUpdateDestroyQuizView.as_view()),
     path("api/quizzes/<uuid:quiz_id>/questions", ListCreateQuestionView.as_view()),
     path(
